@@ -8,6 +8,12 @@ import (
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 )
 
+// Database table names
+const (
+	TableTransaction      = "transaction"
+	TableTransactionLabel = "transaction_label"
+)
+
 var (
 	// Client : gorm database instance
 	Client *gorm.DB
