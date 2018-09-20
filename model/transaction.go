@@ -1,23 +1,49 @@
 package model
 
 import (
+	"database/sql"
+
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/jinzhu/gorm"
 	"gitlab.com/canya-com/canwork-database-client"
 )
 
+var (
+	// DefaultNetwork : mainnet
+	DefaultNetwork = "mainnet"
+)
+
+const (
+	statusPending = "pending"
+	statusFailed  = "failed"
+	statusTimeout = "timeout"
+	statusSuccess = "success"
+)
+
+// StatusPending : get tx status pending
+func (model *Transaction) StatusPending() string { return statusPending }
+
+// StatusFailed : get tx status failed
+func (model *Transaction) StatusFailed() string { return statusFailed }
+
+// StatusTimeout : get tx status timeout
+func (model *Transaction) StatusTimeout() string { return statusTimeout }
+
+// StatusSuccess : get tx status success
+func (model *Transaction) StatusSuccess() string { return statusSuccess }
+
 // Transaction describes the data structure for an Ethereum tx request
 type Transaction struct {
-	Hash             string `gorm:"column:hash" json:"hash,omitempty"`
-	From             string `gorm:"column:from" json:"from,omitempty"`
-	Status           string `gorm:"column:status" json:"status,omitempty"`
-	Network          string `gorm:"column:network" json:"network,omitempty"`
-	CreatedAt        int64 `gorm:"column:created_at" json:"created_at,omitempty"`
-	CompletedAt      int64 `gorm:"column:completed_at" json:"completed_at,omitempty"`
-	Timeout          int64 `gorm:"column:timeout" json:"timeout,omitempty"`
-	WebhookOnSuccess string `gorm:"column:webhook_on_success" json:"webhook_on_success,omitempty"`
-	WebhookOnTimeout string `gorm:"column:webhook_on_timeout" json:"webhook_on_timeout,omitempty"`
+	Hash             string         `gorm:"column:hash" json:"hash,omitempty"`
+	From             string         `gorm:"column:from" json:"from,omitempty"`
+	Status           sql.NullString `gorm:"column:status" json:"status,omitempty"`
+	Network          string         `gorm:"column:network" json:"network,omitempty"`
+	CreatedAt        int64          `gorm:"column:created_at" json:"created_at,omitempty"`
+	CompletedAt      int64          `gorm:"column:completed_at" json:"completed_at,omitempty"`
+	Timeout          int64          `gorm:"column:timeout" json:"timeout,omitempty"`
+	WebhookOnSuccess string         `gorm:"column:webhook_on_success" json:"webhook_on_success,omitempty"`
+	WebhookOnTimeout string         `gorm:"column:webhook_on_timeout" json:"webhook_on_timeout,omitempty"`
 }
 
 // Table : gets database table instance
